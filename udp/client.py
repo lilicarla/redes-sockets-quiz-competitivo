@@ -19,7 +19,6 @@ class SocketClient:
         self.listen = True
         self.qNumber = 0 # questions
         self.sentAnswr = False
-        self.standBy = False
 
     def setSocket(self):
         self.UDPClientSocket = socket(AF_INET, SOCK_DGRAM)
@@ -28,21 +27,18 @@ class SocketClient:
         self.sentAnswr = False
         # send messages to server
         answer = str(input("\n>>>"))
-        if not self.standBy:
-            resp = answer.encode()
-            self.sentAnswr = True
-            if self.listen:
-                try:
-                    self.UDPClientSocket.sendto(resp, ('localhost', 9500)) #localhost 9500
-                except OSError as error:
-                    print(f"\nERRO: '{error}'")
-                    self.listen = False
-                    print("\n\n______FIM______")
-                    self.UDPClientSocket.close()
-            else:
-                print("\nvocê foi desconectado")
-        
-        self.standBy == False
+        resp = answer.encode()
+        self.sentAnswr = True
+        if self.listen:
+            try:
+                self.UDPClientSocket.sendto(resp, ('localhost', 9500)) #localhost 9500
+            except OSError as error:
+                print(f"\nERRO: '{error}'")
+                self.listen = False
+                print("\n\n______FIM______")
+                self.UDPClientSocket.close()
+        else:
+            print("\nvocê foi desconectado")
 
     def __setActions(self, serverMsg : bytes):
 
@@ -61,7 +57,7 @@ class SocketClient:
 
         # divider
         elif sMsg == 'BR':
-            self.standBy == True
+            pass
         
         # request accepted
         elif sMsg == 'OK':
@@ -78,8 +74,6 @@ class SocketClient:
                 threading.Thread(target=self.__sendAnswer).start()
             else:
                 while self.sentAnswr == False:
-                    pass
-                while self.standBy == True:
                     pass
 
                 threading.Thread(target=self.__sendAnswer).start()
