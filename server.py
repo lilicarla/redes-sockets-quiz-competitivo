@@ -204,6 +204,7 @@ class GameServer:
                         if len(self.playersAddresses) == 1:
                             time.sleep(90)
                             self.gameStarted = True
+                            self.aux = address
                     # wait for new players
                     while not self.gameStarted:
                         pass
