@@ -54,6 +54,16 @@ class GameServer:
         self.answered.clear()
         self.correctAnswer = False
 
+    def __clearPlayersData(self):
+        self.__clearFields()
+        self.playersRanking.clear()
+        self.playersAddresses.clear()
+        self.questionsDict.clear()
+        self.aux = None
+        self.sentFinalMsg = False
+        self.round = -1
+        self.gameStarted = False
+
     def __closeServer(self):
         while self.sentFinalMsg == False:
             pass
@@ -65,19 +75,37 @@ class GameServer:
             name = i
             score = self.playersRanking[i]
             print(f'\n {name} - ' + f'{score}')
-        print("\n\n encerrando em 10s")
-        time.sleep(10)
-        self.UDPServerSocket.close()
+
+        # start a new game or close server
+        print("\n\n deseja iniciar uma nova partida? (s/n)")
+        res = str(input("\n>>>"))
+
+        if res == "s":
+
+            self.__clearPlayersData()
+            self.setQuestions()
+
+            print('\n\n INICIO')
+            
+            self.listen = True
+            print('\n aguardando jogadores...')
+
+        else:
+            print('\n encerrando servidor...')
+            for i in range(3):
+                time.sleep(1)
+                print(f'\n{i}')
+            self.UDPServerSocket.close()
 
     def setQuestions(self):
-        file = open(r"udp/qa.txt", "r")
+        file = open(r"qa.txt", "r")
         indexes = []
         lines = file.readlines()
         aux = 0
 
         while len(indexes) < 5:
             index = random.randrange(0,20)
-            if not index in indexes:
+            if index not in indexes:
                 indexes.append(index)
 
         file.close()
@@ -173,7 +201,7 @@ class GameServer:
         
         # pause between rounds (except the last one)
         if index < 4:
-            time.sleep(6)
+            time.sleep(5)
 
     def __setGame(self, res : bytes, address):
 
@@ -201,7 +229,10 @@ class GameServer:
 
                     if not self.gameStarted:
                         print("\n Aguardando mais jogadores...")
-
+                        if len(self.playersAddresses) == 1:
+                            time.sleep(90)
+                            self.gameStarted = True
+                            self.aux = address
                     # wait for new players
                     while not self.gameStarted:
                         pass
