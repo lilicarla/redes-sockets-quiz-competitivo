@@ -61,9 +61,17 @@ class GameServer:
 
         time.sleep(3)
         print(f"\n\n---> pontuação final do jogo:\n")
+        print(self.playersRanking)
+        result_score = []
         for i in self.playersRanking:
             name = i
             score = self.playersRanking[i]
+            result_score.append((name, score))
+
+        sorted_by_second = sorted(result_score, key=lambda tup: tup[1])
+        for tupla in sorted_by_second:
+            name = tupla[0]
+            score = tupla[1]
             print(f'\n {name} - ' + f'{score}')
         print("\n\n encerrando em 10s")
         time.sleep(10)
