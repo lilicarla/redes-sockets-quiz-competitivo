@@ -173,7 +173,7 @@ class GameServer:
         
         # pause between rounds (except the last one)
         if index < 4:
-            time.sleep(6)
+            time.sleep(5)
 
     def __setGame(self, res : bytes, address):
 
@@ -202,7 +202,7 @@ class GameServer:
                     if not self.gameStarted:
                         print("\n Aguardando mais jogadores...")
                         if len(self.playersAddresses) == 1:
-                            time.sleep(30)
+                            time.sleep(90)
                             self.gameStarted = True
                     # wait for new players
                     while not self.gameStarted:

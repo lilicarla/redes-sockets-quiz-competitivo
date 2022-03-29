@@ -107,7 +107,7 @@ class SocketClient:
 
     def __fromServer(self):
 
-        self.UDPClientSocket.settimeout(120)
+        self.UDPClientSocket.settimeout(180)
         while self.listen:
             try:
                 serverData = self.UDPClientSocket.recvfrom(1024)
