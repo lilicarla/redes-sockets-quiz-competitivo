@@ -62,10 +62,6 @@ class SocketClient:
         # request accepted
         elif sMsg == 'OK':
             pass
-
-        # wait next question
-        elif sMsg == 'wait':
-            pass
         
         # questions
         else:
