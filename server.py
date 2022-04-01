@@ -61,8 +61,10 @@ class GameServer:
 
         time.sleep(3)
         print(f"\n\n---> pontuação final do jogo:\n")
+        #{nome: pontuacao}
         print(self.playersRanking)
         result_score = []
+        #dicionary.values() -> retorna os scores de cada posição
         for i in self.playersRanking:
             name = i
             score = self.playersRanking[i]
@@ -270,8 +272,6 @@ class GameServer:
 def main():
     match = GameServer('localhost', 9500)
     match.setQuestions()
-    match.setUpServer()
-    match.receiveData()
 
 if __name__ == '__main__':
     main()
