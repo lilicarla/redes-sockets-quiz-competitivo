@@ -54,6 +54,16 @@ class GameServer:
         self.answered.clear()
         self.correctAnswer = False
 
+    def __clearPlayersData(self):
+        self.__clearFields()
+        self.playersRanking.clear()
+        self.playersAddresses.clear()
+        self.questionsDict.clear()
+        self.aux = None
+        self.sentFinalMsg = False
+        self.round = -1
+        self.gameStarted = False
+
     def __closeServer(self):
         while self.sentFinalMsg == False:
             pass
@@ -75,9 +85,27 @@ class GameServer:
             name = tupla[0]
             score = tupla[1]
             print(f'\n {name} - ' + f'{score}')
-        print("\n\n encerrando em 10s")
-        time.sleep(10)
-        self.UDPServerSocket.close()
+
+        # start a new game or close server
+        print("\n\n deseja iniciar uma nova partida? (s/n)")
+        res = str(input("\n>>>"))
+
+        if res == "s":
+
+            self.__clearPlayersData()
+            self.setQuestions()
+
+            print('\n\n INICIO')
+            
+            self.listen = True
+            print('\n aguardando jogadores...')
+
+        else:
+            print('\n encerrando servidor...')
+            for i in range(3):
+                time.sleep(1)
+                print(f'\n{i}')
+            self.UDPServerSocket.close()
 
     def setQuestions(self):
         file = open(r"qa.txt", "r")
