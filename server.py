@@ -231,18 +231,18 @@ class GameServer:
                     # send confirmation message
                     self.__sendGameStatus(address = address, accepted=True)
 
-                    # start game when the last player joins
-                    if len(self.playersAddresses) == 5:
-                        self.gameStarted = True
-                        self.aux = address # choose the last player's thread as a helper for some commands
-                        print("\n________ começando ________")
-
                     if not self.gameStarted:
                         print("\n Aguardando mais jogadores...")
                         if len(self.playersAddresses) == 1:
-                            time.sleep(90)
+                            self.aux = address # choose the first player's thread as a helper for some commands
+                            t =0
+                            while t < 90:
+                                time.sleep(1)
+                                t += 1
+                            
+                            print("\n________ começando ________")
                             self.gameStarted = True
-                            self.aux = address
+                            
                     # wait for new players
                     while not self.gameStarted:
                         pass
@@ -300,6 +300,8 @@ class GameServer:
 def main():
     match = GameServer('localhost', 9500)
     match.setQuestions()
+    match.setUpServer()
+    match.receiveData()
 
 if __name__ == '__main__':
     main()
