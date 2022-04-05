@@ -95,11 +95,11 @@ class Application(Frame):
 
 
     def showNewQuestion(self, title):
-        self.inputEntry.delete(0, 'end')
         self.actualQuestion += 1
         self.stateVar.set(title)
         self.inputEntry.config(state="normal")
         self.button.config(state="normal")
+        self.inputEntry.delete(0, tk.END)
 
     def changeTitle(self, title):
         self.stateVar.set(title)
