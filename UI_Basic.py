@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 import tkinter as tk
 from socket import socket, AF_INET, SOCK_DGRAM
 import threading
@@ -20,23 +21,50 @@ class Application(Frame):
         self.stateVar.set("OK?")
 
         # Create a label to display the status
-        self.label1 = Label(textvariable=self.stateVar)
-        self.label1.grid()
+        self.label1 = ttk.Label(parent,
+                            padding=(10,20),
+                            width= 100,
+                            textvariable=self.stateVar,
+                            font=('Arial', 10),
+                            justify='center',
+                            anchor=CENTER)
+        self.label1.pack()
 
         # Creating Input
-        self.inputEntry = tk.Entry(bd=1)
-        self.inputEntry.grid()
+        self.inputEntry = ttk.Entry(parent,
+                                    width=35,
+                                    font=('Arial', 10))
+        self.inputEntry.pack()
+
         # Calling on_change when you press the return key
         self.inputEntry.bind("<Return>", self.submit)
 
         # Create a button which will change the status
-        self.button = Button(text="enviar", command=self.submit)
-        self.button.grid()
+        self.button = ttk.Button(parent,
+                            text="enviar",
+                            padding=3,
+                            width=10,
+                            command=self.submit)
+        self.button.pack()
 
-        parent.geometry("300x100")  # You want the size of the app to be 500x500
-        parent.resizable(0, 0)  # Don't allow resizing in the x or y direction
+        # place widgets
+        self.label1.place(relx=0.5, rely=0.25, anchor=CENTER)
+        self.inputEntry.place(relx=0.5, rely=0.45, anchor=CENTER)
+        self.button.place(relx=0.5, rely=0.7, anchor=CENTER) 
+        
+        self.setStyle()
+        parent.resizable(1, 0)  # Don't allow resizing in the y direction
 
         self.setSocket()
+
+    def setStyle(self):
+        width = 650
+        heigh = 250
+        screenSizeY = self.winfo_screenheight()
+        screenSizeX = self.winfo_screenwidth()
+        posx = screenSizeX / 2 - width /2
+        posy = screenSizeY / 2 - heigh /2
+        self.root.geometry("%dx%d+%d+%d" %(width, heigh, posx, posy))
 
     def submit(self, e=None):
         """Called when the button is pressed or Pressed enter"""
@@ -183,5 +211,4 @@ if __name__ == '__main__':
     root = Tk()
     root.title("Sockets demonstration")
     app = Application(root)
-    app.grid()
     root.mainloop()
