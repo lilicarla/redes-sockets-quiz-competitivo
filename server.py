@@ -1,3 +1,4 @@
+from os import name
 from socket import socket, AF_INET, SOCK_DGRAM
 import time
 import threading
@@ -253,6 +254,11 @@ class GameServer:
                         self.__sendQuestion(address=address, index=i)
                         self.__setTimeout(address=address, index=i)
 
+                    # send final score
+                    scoreMsg = str(self.playersRanking[playerName])
+                    self.UDPServerSocket.sendto(scoreMsg.encode(), address)
+                    time.sleep(10)
+
                     # send final message
                     finalMsg = "end"
                     self.UDPServerSocket.sendto(finalMsg.encode(), address)
@@ -298,10 +304,10 @@ class GameServer:
                 print("\n_______FIM_______") 
                 
 def main():
-    match = GameServer('localhost', 9500)
-    match.setQuestions()
-    match.setUpServer()
-    match.receiveData()
+    game = GameServer('localhost', 9500)
+    game.setQuestions()
+    game.setUpServer()
+    game.receiveData()
 
 if __name__ == '__main__':
     main()

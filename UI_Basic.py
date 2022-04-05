@@ -168,7 +168,10 @@ class Application(Frame):
 
         # questions
         else:
-            self.showNewQuestion(message)
+            if self.actualQuestion == 4:
+                self.changeTitle('PONTUAÇÃO FINAL: '+ message)
+            else:
+                self.showNewQuestion(message)
 
     def __fromServer(self):
 
@@ -190,7 +193,6 @@ class Application(Frame):
 
     def sendName(self):
         initMsg = self.lastAnswer.encode()
-        print('teste')
         print(self.lastAnswer)
         self.UDPClientSocket.sendto(initMsg, (self.host, self.port))
         threading.Thread(target=self.__fromServer).start()
