@@ -201,7 +201,7 @@ class Application(Frame):
 
         if confirmation.lower() == 'ok':
             self.showNewQuestion("Seu nome será enviado em 10 segundos, digite aqui:")
-            #giving 5sec to input a name or the name will be OK
+            #giving 10sec to input a name or the name will be OK
             self.inputEntry.after(10000, self.sendName)
         else:
             self.UDPClientSocket.close()
