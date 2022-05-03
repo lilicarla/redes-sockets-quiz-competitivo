@@ -108,7 +108,7 @@ class Application(Frame):
         self.UDPClientSocket = socket(AF_INET, SOCK_DGRAM)
 
     def __setActions(self, serverMsg: bytes):
-        sMsg = serverMsg.decode()
+        sMsg = serverMsg.decode('utf-8')
 
         # request denied
         if sMsg == 'DENIED':
@@ -143,7 +143,8 @@ class Application(Frame):
                 threading.Thread().start()
 
     def __decodeServerMsg(self, serverMsg: bytes) -> str:
-        message = serverMsg.decode()
+        message = serverMsg.decode('utf-8')
+        print(message)
 
         # request accepted
         if message == 'OK':
@@ -168,7 +169,10 @@ class Application(Frame):
 
         # questions
         else:
-            self.showNewQuestion(message)
+            if self.actualQuestion == 4:
+                self.changeTitle('PONTUAÇÃO FINAL: '+ message)
+            else:
+                self.showNewQuestion(message)
 
     def __fromServer(self):
 
@@ -190,7 +194,6 @@ class Application(Frame):
 
     def sendName(self):
         initMsg = self.lastAnswer.encode()
-        print('teste')
         print(self.lastAnswer)
         self.UDPClientSocket.sendto(initMsg, (self.host, self.port))
         threading.Thread(target=self.__fromServer).start()
