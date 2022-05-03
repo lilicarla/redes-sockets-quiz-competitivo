@@ -109,7 +109,7 @@ class GameServer:
             self.UDPServerSocket.close()
 
     def setQuestions(self):
-        file = open(r"qa.txt", "r")
+        file = open(r"qa.txt", "r", encoding='utf-8')
         indexes = []
         lines = file.readlines()
         aux = 0
@@ -166,9 +166,9 @@ class GameServer:
         resAccepted = "OK"
 
         if accepted:
-            self.UDPServerSocket.sendto(resAccepted.encode(), address)
+            self.UDPServerSocket.sendto(resAccepted.encode('utf-8'), address)
         else:
-            self.UDPServerSocket.sendto(resDenied.encode(), address)
+            self.UDPServerSocket.sendto(resDenied.encode('utf-8'), address)
     
     def __sendQuestion(self, address, index):
 
@@ -179,7 +179,7 @@ class GameServer:
         newQuestion = self.__getNextQuestion(index)
 
         # send question
-        self.UDPServerSocket.sendto(newQuestion.encode(), address)
+        self.UDPServerSocket.sendto(newQuestion.encode('utf-8'), address)
 
         if self.aux == address:
             # print current question
@@ -197,7 +197,7 @@ class GameServer:
 
         # draw a line to separate rounds
         line = "BR"
-        self.UDPServerSocket.sendto(line.encode(), address)
+        self.UDPServerSocket.sendto(line.encode('utf-8'), address)
 
         # set rounds
         if self.aux == address:
@@ -256,12 +256,12 @@ class GameServer:
 
                     # send final score
                     scoreMsg = str(self.playersRanking[playerName])
-                    self.UDPServerSocket.sendto(scoreMsg.encode(), address)
+                    self.UDPServerSocket.sendto(scoreMsg.encode('utf-8'), address)
                     time.sleep(10)
 
                     # send final message
                     finalMsg = "end"
-                    self.UDPServerSocket.sendto(finalMsg.encode(), address)
+                    self.UDPServerSocket.sendto(finalMsg.encode('utf-8'), address)
                     if self.sentFinalMsg == False:
                         self.sentFinalMsg = True
 

@@ -108,7 +108,7 @@ class Application(Frame):
         self.UDPClientSocket = socket(AF_INET, SOCK_DGRAM)
 
     def __setActions(self, serverMsg: bytes):
-        sMsg = serverMsg.decode()
+        sMsg = serverMsg.decode('utf-8')
 
         # request denied
         if sMsg == 'DENIED':
@@ -143,7 +143,8 @@ class Application(Frame):
                 threading.Thread().start()
 
     def __decodeServerMsg(self, serverMsg: bytes) -> str:
-        message = serverMsg.decode()
+        message = serverMsg.decode('utf-8')
+        print(message)
 
         # request accepted
         if message == 'OK':
